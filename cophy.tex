@@ -1,5 +1,5 @@
 \documentclass{article}
-
+\usepackage{amsmath}
 \frenchspacing
 
 \title{Bayesian Inference of Cophylogenies}
@@ -16,13 +16,18 @@
                 
                 Randomly select an internal node $i$ from the symbiont tree. 
                 Let $p$ be its parent, $c_1$ and $c_2$ be its children, $h \in 
-                H_{\tau_i}$ be its host, and $q$ be the parent of $h$. Choose a 
-                new height $\tau_i\prime$ uniformly at random from the 
-                interval $\left[\max\left(\tau_{c_1},\tau_{c_2}\right), 
-                \min\left(\tau_p,\tau_q\right)\right]$.
-                
+                H_{\tau_i}$ be its host, $q$ be the parent of $h$, 
+                $\tau_\text{lower} = \max\left(\tau_{c_1},\tau_{c_2}\right)$, 
+                and $\tau_\text{upper} = \min\left(\tau_p,\tau_q\right)$. 
+                Choose a new height ${\tau_i}^\prime$ uniformly at random from 
+                the interval $\left[\tau_\text{lower}, 
+                \tau_\text{upper}\right]$ and then randomly select a new host 
+                $h^\prime \in H_{{\tau_i}^\prime}$. The Hastings ratio for this 
+                operation is $\frac{\lvert{H_{{\tau_i}^\prime}}\rvert}
+                {\lvert{H_{\tau_i}}\rvert}$.
 
             \subsubsection*{Cospeciation Operator}
-    
+                
+                Randomly select an internal node $i$ from the symbiont tree.
 
 \end{document}
