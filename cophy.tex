@@ -1,5 +1,6 @@
 \documentclass{article}
 \usepackage{amsmath}
+\usepackage{amssymb}
 \frenchspacing
 
 \title{Bayesian Inference of Cophylogenies}
@@ -7,28 +8,33 @@
 \begin{document}
 
     \section*{Methods}
-       
-        Let $\tau_n$ be the height of a node $n$ and $H_t = \left\{h \in H: 
+
+        Let $\tau_n$ be the height of a node $n$ and $H_t = \left\{h \in H:
         \tau_h \leq t < \tau_p\right\}$, where $p$ is the parent of $h$.
 
         \subsection*{Cophylogeny Density}
-        
+
+            Let $\vec{S}\left(t\right) : \mathbb{R}_{\geq 0} \mapsto
+            \mathbb{Z}_{\geq 0}^{\lvert{H_t}\rvert}$ be the number of symbionts
+            present on each host lineage at time $t$.
+
             \begin{equation}
                 \begin{split}
-                    \frac{\partial}{\partial t} P\left(\vec{s},t\right) = 
-                    \sum_{i=1}^{H\left(t\right)} &P\left(\vec{s} - \hat{u}_i, 
-                    t\right)T_{B_i}\left(\vec{s} - \hat{u}_i\right) \\ &+ 
-                    P\left(\vec{s} + \hat{u}_i, t\right)T_{D_i}\left(\vec{s} + 
-                    \hat{u}_i \right) \\ &- P\left(\vec{s}, 
-                    t\right)\left(T_{B_i}\left(\vec{s}\right) + 
+                    \frac{\partial}{\partial t} P\left(\vec{S}\left(t\right) =
+                    \vec{s},t\right) = \sum_{i=1}^{\lvert{H_t}\rvert}
+                    &P\left(\vec{s} - \hat{u}_i, t\right)T_{B_i}\left(\vec{s} -
+                    \hat{u}_i\right) \\ &+ P\left(\vec{s} + \hat{u}_i,
+                    t\right)T_{D_i}\left(\vec{s} + \hat{u}_i \right) \\ &-
+                    P\left(\vec{s}, t\right)\left(T_{B_i}\left(\vec{s}\right) +
                     T_{D_i}\left(\vec{s} \right)\right),
                 \end{split}
             \end{equation}
             where $\hat{u}_i$ is the unit vector whose $i$th element is 1,
             \begin{equation}
-                T_{B_i}\left(\vec{s}\right) = \lambda \vec{s}_i + 
-                \frac{\tau}{H\left(t\right) - 1} 
-                \left(\sum_{j=1}^{H\left(t\right)}{\vec{s}_j}-\vec{s}_i\right),
+                T_{B_i}\left(\vec{s}\right) = \lambda \vec{s}_i +
+                \frac{\tau}{\lvert{H_t}\rvert - 1}
+                \left(\sum_{j=1}^{\lvert{H_t}\rvert}
+                {\vec{s}_j}-\vec{s}_i\right),
             \end{equation}
             and
             \begin{equation}
@@ -36,39 +42,39 @@
             \end{equation}
 
         \subsection*{Operators}
-            
+
             \subsubsection*{Host-Switch Operator}
-                
-                Randomly select an internal node $i$ from the symbiont tree. 
-                Let $p$ be its parent, $c_1$ and $c_2$ be its children, $h \in 
-                H_{\tau_i}$ be its host, $q$ be the parent of $h$, 
-                $\tau_\text{lower} = \max\left(\tau_{c_1},\tau_{c_2}\right)$, 
-                and $\tau_\text{upper} = \min\left(\tau_p,\tau_q\right)$. 
-                Choose a new height ${\tau_i}^*$ uniformly at random from 
-                the interval $\left[\tau_\text{lower}, 
-                \tau_\text{upper}\right]$ and then randomly select a new host 
-                $h^* \in H_{{\tau_i}^*}.$\footnote{This is not the operator 
-                exactly as Alexei suggested it, but this version is easier to 
-                implement.} The Hastings ratio for this operation is 
+
+                Randomly select an internal node $i$ from the symbiont tree.
+                Let $p$ be its parent, $c_1$ and $c_2$ be its children, $h \in
+                H_{\tau_i}$ be its host, $q$ be the parent of $h$,
+                $\tau_\text{lower} = \max\left(\tau_{c_1},\tau_{c_2}\right)$,
+                and $\tau_\text{upper} = \min\left(\tau_p,\tau_q\right)$.
+                Choose a new height ${\tau_i}^*$ uniformly at random from
+                the interval $\left[\tau_\text{lower},
+                \tau_\text{upper}\right]$ and then randomly select a new host
+                $h^* \in H_{{\tau_i}^*}.$\footnote{This is not the operator
+                exactly as Alexei suggested it, but this version is easier to
+                implement.} The Hastings ratio for this operation is
                 $\frac{\lvert{H_{{\tau_i}^*}}\rvert}
                 {\lvert{H_{\tau_i}}\rvert}$.
 
             \subsubsection*{Cospeciation Operator}
-                
+
                 Randomly select an internal node $i$ from the symbiont tree.
-                Let $p$ be its parent, $c_1$ and $c_2$ be its children, $h \in 
-                H_{\tau_i}$ be its host, $q$ be the parent of $h$, and 
-                $\tau_\text{upper} = \min\left(\tau_p,\tau_q\right)$. No 
-                operation is possible when $\tau_h \leq 
+                Let $p$ be its parent, $c_1$ and $c_2$ be its children, $h \in
+                H_{\tau_i}$ be its host, $q$ be the parent of $h$, and
+                $\tau_\text{upper} = \min\left(\tau_p,\tau_q\right)$. No
+                operation is possible when $\tau_h \leq
                 \max\left(\tau_{c_1},\tau_{c_2}\right)$.
-               
-                If $\tau_i = \tau_h$, choose a new height $\tau_i^*$ uniformly 
-                at random from the interval $\left[\tau_h, 
-                \tau_\text{upper}\right]$. This operation increases the state's 
-                dimension by one and has a Hastings ratio of $\tau_\text{upper} 
+
+                If $\tau_i = \tau_h$, choose a new height $\tau_i^*$ uniformly
+                at random from the interval $\left[\tau_h,
+                \tau_\text{upper}\right]$. This operation increases the state's
+                dimension by one and has a Hastings ratio of $\tau_\text{upper}
                 - \tau_h$.
-               
-                Otherwise when $\tau_i \neq \tau_h$, set $\tau_i^* = \tau_h$. 
-                This reduces the dimension by one and has a Hastings ratio of 
+
+                Otherwise when $\tau_i \neq \tau_h$, set $\tau_i^* = \tau_h$.
+                This reduces the dimension by one and has a Hastings ratio of
                 $\frac{1}{\tau_\text{upper} - \tau_h}$.
 \end{document}
