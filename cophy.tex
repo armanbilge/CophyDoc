@@ -7,7 +7,10 @@
 \begin{document}
 
     \section*{Methods}
-        
+       
+        Let $\tau_n$ be the height of a node $n$ and $H_t = \left\{h : \tau_h 
+        \leq t < \tau_p\right\}$, where $p$ is the parent of $h$.
+
         \subsection*{Cophylogeny Density}
 
         \subsection*{Operators}
@@ -19,15 +22,29 @@
                 H_{\tau_i}$ be its host, $q$ be the parent of $h$, 
                 $\tau_\text{lower} = \max\left(\tau_{c_1},\tau_{c_2}\right)$, 
                 and $\tau_\text{upper} = \min\left(\tau_p,\tau_q\right)$. 
-                Choose a new height ${\tau_i}^\prime$ uniformly at random from 
+                Choose a new height ${\tau_i}^*$ uniformly at random from 
                 the interval $\left[\tau_\text{lower}, 
                 \tau_\text{upper}\right]$ and then randomly select a new host 
-                $h^\prime \in H_{{\tau_i}^\prime}$. The Hastings ratio for this 
-                operation is $\frac{\lvert{H_{{\tau_i}^\prime}}\rvert}
+                $h^* \in H_{{\tau_i}^*}$. The Hastings ratio for this 
+                operation is $\frac{\lvert{H_{{\tau_i}^*}}\rvert}
                 {\lvert{H_{\tau_i}}\rvert}$.
 
             \subsubsection*{Cospeciation Operator}
                 
                 Randomly select an internal node $i$ from the symbiont tree.
-
+                Let $p$ be its parent, $c_1$ and $c_2$ be its children, $h \in 
+                H_{\tau_i}$ be its host, $q$ be the parent of $h$, and 
+                $\tau_\text{upper} = \min\left(\tau_p,\tau_q\right)$. No 
+                operation is possible when $\tau_h \leq 
+                \max\left(\tau_{c_1},\tau_{c_2}\right)$.
+               
+                If $\tau_i = \tau_h$, choose a new height $\tau_i^*$ uniformly 
+                at random from the interval $\left[\tau_h, 
+                \tau_\text{upper}\right]$. This operation increases the state's 
+                dimension by one and has a Hastings ratio of $\tau_\text{upper} 
+                - \tau_h$.
+               
+                Otherwise when $\tau_i \neq \tau_h$, set $\tau_i^* = \tau_h$. 
+                This reduces the dimension by one and has a Hastings ratio of 
+                $\frac{1}{\tau_\text{upper} - \tau_h}$.
 \end{document}
