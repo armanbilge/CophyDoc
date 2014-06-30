@@ -8,10 +8,32 @@
 
     \section*{Methods}
        
-        Let $\tau_n$ be the height of a node $n$ and $H_t = \left\{h : \tau_h 
-        \leq t < \tau_p\right\}$, where $p$ is the parent of $h$.
+        Let $\tau_n$ be the height of a node $n$ and $H_t = \left\{h \in H: 
+        \tau_h \leq t < \tau_p\right\}$, where $p$ is the parent of $h$.
 
         \subsection*{Cophylogeny Density}
+        
+            \begin{equation}
+                \begin{split}
+                    \frac{\partial}{\partial t} P\left(\vec{s},t\right) = 
+                    \sum_{i=1}^{H\left(t\right)} &P\left(\vec{s} - \hat{u}_i, 
+                    t\right)T_{B_i}\left(\vec{s} - \hat{u}_i\right) \\ &+ 
+                    P\left(\vec{s} + \hat{u}_i, t\right)T_{D_i}\left(\vec{s} + 
+                    \hat{u}_i \right) \\ &- P\left(\vec{s}, 
+                    t\right)\left(T_{B_i}\left(\vec{s}\right) + 
+                    T_{D_i}\left(\vec{s} \right)\right),
+                \end{split}
+            \end{equation}
+            where $\hat{u}_i$ is the unit vector whose $i$th element is 1,
+            \begin{equation}
+                T_{B_i}\left(\vec{s}\right) = \lambda \vec{s}_i + 
+                \frac{\tau}{H\left(t\right) - 1} 
+                \left(\sum_{j=1}^{H\left(t\right)}{\vec{s}_j}-\vec{s}_i\right),
+            \end{equation}
+            and
+            \begin{equation}
+                T_{D_i}\left(\vec{s}\right) = \mu \vec{s}_i
+            \end{equation}
 
         \subsection*{Operators}
             
@@ -25,8 +47,10 @@
                 Choose a new height ${\tau_i}^*$ uniformly at random from 
                 the interval $\left[\tau_\text{lower}, 
                 \tau_\text{upper}\right]$ and then randomly select a new host 
-                $h^* \in H_{{\tau_i}^*}$. The Hastings ratio for this 
-                operation is $\frac{\lvert{H_{{\tau_i}^*}}\rvert}
+                $h^* \in H_{{\tau_i}^*}.$\footnote{This is not the operator 
+                exactly as Alexei suggested it, but this version is easier to 
+                implement.} The Hastings ratio for this operation is 
+                $\frac{\lvert{H_{{\tau_i}^*}}\rvert}
                 {\lvert{H_{\tau_i}}\rvert}$.
 
             \subsubsection*{Cospeciation Operator}
