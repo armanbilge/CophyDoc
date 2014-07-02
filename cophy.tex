@@ -20,8 +20,8 @@
 
             \begin{equation}
                 \begin{split}
-                    \frac{\partial}{\partial t} P\left(\vec{S}\left(t\right) =
-                    \vec{s},t\right) = \sum_{i=1}^{\lvert{H_t}\rvert}
+                    \frac{\partial}{\partial t} P\left(\vec{s},t\right) =
+                    \sum_{i=1}^{\lvert{H_t}\rvert}
                     &P\left(\vec{s} - \hat{u}_i, t\right)T_{B_i}\left(\vec{s} -
                     \hat{u}_i\right) \\ &+ P\left(\vec{s} + \hat{u}_i,
                     t\right)T_{D_i}\left(\vec{s} + \hat{u}_i \right) \\ &-
@@ -29,7 +29,9 @@
                     T_{D_i}\left(\vec{s} \right)\right),
                 \end{split}
             \end{equation}
-            where $\hat{u}_i$ is the unit vector whose $i$th element is 1,
+            where $P\left(\vec{s}, t\right) \equiv P\left(\vec{S}\left(t\right)
+            = \vec{s}, t\right)$, $\hat{u}_i$ is the unit vector whose $i$th
+            element is 1,
             \begin{equation}
                 T_{B_i}\left(\vec{s}\right) = \lambda \vec{s}_i +
                 \frac{\tau}{\lvert{H_t}\rvert - 1}
