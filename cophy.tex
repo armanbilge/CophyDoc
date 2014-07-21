@@ -9,14 +9,50 @@
 
     \section*{Methods}
 
-        Let $\tau_n$ be the height of a node $n$ and $H_t = \left\{h \in H:
-        \tau_h \leq t < \tau_p\right\}$, where $p$ is the parent of $h$.
+        \subsection*{The Model}
+
+            The host and symbiont processes originate together. The host
+            evolves under a pure birth process and simultaneous with every host
+            speciation event is the cospeciation of every symbiont lineage
+            currently associated with that host. When a symbiont cospeciates,
+            one of the new lineages is paired with one of the new host lineages
+            and the other symbiont lineage is paired with the other host
+            lineage. Independently of the evolution of its host, a symbiont may
+            speciate with both new lineages remaining on the host (duplication
+            event), speciate with one of the new lineages remaining on the host
+            and the other symbiont lineage selecting a uniformly random new
+            host (host-switch event), or go extinct (loss event). These events
+            are independent Poisson processes with rates $\lambda$, $\tau$, and
+            $\mu$, respectively. No host-switching may occur when there is only
+            a single host lineage.
+
+        \subsection*{Definitions}
+
+            Let , and . The complete cophylogeny consists
+
+            Let $\tau_n$ be the height of a node~$n$ and $H_t = \left\{h \in H:
+            \tau_h \leq t < \tau_p\right\}$ be the set of host lineages that exist
+            at time~$t$, where $p$ is the parent of $h$.
 
         \subsection*{Cophylogeny Density}
 
-            Let $\vec{S}\left(t\right) : \mathbb{R}_{\geq 0} \mapsto
-            \mathbb{Z}_{\geq 0}^{\lvert{H_t}\rvert}$ be the number of symbionts
-            present on each host lineage at time $t$.
+            We partition the cophylogeny into intervals of time between
+            symbiont speciation events.
+
+            If $s$ is a leaf node, we return the probability of a single
+            symbiont on $h = \text{host}\left(s\right)$, $P\left(\hat{u}_h,
+            0\right)$, where $\hat{u}_i$ is the unit vector whose $i$th
+            component is~$1$.
+
+            If $s$ is a cospeciation event then we return
+
+        \subsection*{Density for the D-HS-L Process}
+
+            Let $\vec{S}\left(t\right) : \mathbb{R}_{\geq 0} \to
+            \mathbb{N}_{0}^{\lvert{H_t}\rvert}$ be the number of symbionts
+            present on each host lineage at time~$t$. Assuming that in an
+            infinitesimal period of time there may be only one duplication,
+            host-switch, or loss event,
 
             \begin{equation}
                 \begin{split}
@@ -26,22 +62,58 @@
                     \hat{u}_i\right) \\ &+ P\left(\vec{s} + \hat{u}_i,
                     t\right)T_{D_i}\left(\vec{s} + \hat{u}_i \right) \\ &-
                     P\left(\vec{s}, t\right)\left(T_{B_i}\left(\vec{s}\right) +
-                    T_{D_i}\left(\vec{s} \right)\right),
+                    T_{D_i}\left(\vec{s} \right)\right)
                 \end{split}
             \end{equation}
-            where $P\left(\vec{s}, t\right) \equiv P\left(\vec{S}\left(t\right)
+            with the condition that $P\left(\vec{s},t\right) = 0$ if any
+            component of $\vec{s}$ is less than~$0$, where $P\left(\vec{s},
+            t\right) \equiv P\left(\vec{S}\left(t\right)
             = \vec{s}, t\right)$, $\hat{u}_i$ is the unit vector whose $i$th
-            element is 1,
+            component is~$1$,
             \begin{equation}
-                T_{B_i}\left(\vec{s}\right) = \lambda \vec{s}_i +
-                \frac{\tau}{\lvert{H_t}\rvert - 1}
-                \left(\sum_{j=1}^{\lvert{H_t}\rvert}
-                {\vec{s}_j}-\vec{s}_i\right),
+                T_{B_i}\left(\vec{s}\right) =
+                \begin{cases}
+                    \lambda \vec{s}_i & \lvert{H_t}\rvert = 1 \\
+                    \lambda \vec{s}_i +
+                    \frac{\tau}{\lvert{H_t}\rvert - 1}
+                    \left(\sum_{j=1}^{\lvert{H_t}\rvert}
+                    {\vec{s}_j}-\vec{s}_i\right) & \lvert{H_t}\rvert > 1 \\
+                \end{cases}
             \end{equation}
             and
             \begin{equation}
-                T_{D_i}\left(\vec{s}\right) = \mu \vec{s}_i
+                T_{D_i}\left(\vec{s}\right) = \mu \vec{s}_i.
             \end{equation}
+
+            If we add the condition that $P\left(\vec{s},t\right) = 0$ if any
+            component of $\vec{s}$ is more than some maximum~$L$ and that
+            $T_{B_i}\left(\vec{s}\right) = 0$ if $\vec{s}_i = L$ (i.e., we
+            assume that the system may transition between only a finite set of
+            states), we may write the master equation as
+            \begin{equation}
+                \frac{\partial}{\partial t} \vec{P}\left(t\right) =
+                Q\vec{P}\left(t\right)
+            \end{equation}
+            where $\vec{P}\left(t\right)$ is a vector consisting of
+            $P\left(\vec{s}, t\right)$ for all possible values of $\vec{s}$ and
+            $Q$ is a matrix consisting of the coefficients from equation (1).
+            The solution to (4) is
+            \begin{equation}
+                \vec{P}\left(t\right) = e^{Qt}\vec{p}_0
+            \end{equation}
+            where $\vec{p}_0$ is the initial density for the system.
+
+        \subsection*{Density for the Complete Coevolutionary Process}
+
+            The initial density for the next interval can be calculated using
+            the final density of the previous interval using a function
+            $f : [0,1]^n \to [0,1]^{n+1}$ that maps the density immediately
+            preceding the cospeciation event to that immediately following the
+            cospeciation event.
+
+            The initial density for the entire process is
+            $P\left(\langle1\rangle, t_\text{or}\right) = 1$ and 0 for all
+            other $\vec{s}$ at time~$t_\text{or}$.
 
         \subsection*{Operators}
 
