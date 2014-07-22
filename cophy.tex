@@ -3,6 +3,11 @@
 \usepackage{amssymb}
 \frenchspacing
 
+\makeatletter
+\newcommand{\vast}{\bBigg@{4}}
+\newcommand{\Vast}{\bBigg@{5}}
+\makeatother
+
 \title{Bayesian Inference of Cophylogenies}
 
 \begin{document}
@@ -38,19 +43,7 @@
             t_h \leq t < t_p\right\}$ be the set of host lineages that exist
             at time~$t$, where $p$ is the parent of $h$.
 
-        \subsection*{Cophylogeny Density}
-
-            We partition the cophylogeny into intervals of time between
-            symbiont speciation events.
-
-            If $s$ is a leaf node, we return the probability of a single
-            symbiont on $h = \text{host}\left(s\right)$, $P\left(\hat{u}_h,
-            0\right)$, where $\hat{u}_i$ is the unit vector whose $i$th
-            component is~$1$.
-
-            If $s$ is a cospeciation event then we return
-
-        \subsection*{Density for the D-HS-L Process}
+        \subsection*{Density for the Reconstructed Coevolutionary Process}
 
             Let $\vec{S}\left(t\right) : \mathbb{R}_{\geq 0} \to
             \mathbb{N}_{0}^{\lvert{H_t}\rvert}$ be the number of symbionts
@@ -82,7 +75,7 @@
                     \frac{\tau}{\lvert{H_t}\rvert - 1}
                     \left(\sum_{j=1}^{\lvert{H_t}\rvert}
                     {\vec{s}_j}-\vec{s}_i\right) & \lvert{H_t}\rvert > 1 \\
-                \end{cases}
+                \end{cases},
             \end{equation}
             and
             \begin{equation}
@@ -98,7 +91,7 @@
             states), we may write the master equation as
             \begin{equation}
                 \frac{\partial}{\partial t} \vec{P}\left(t\right) =
-                Q\vec{P}\left(t\right)
+                Q\vec{P}\left(t\right),
             \end{equation}
             where $\vec{P}\left(t\right)$ is a vector consisting of
             $P\left(\vec{s}, t\right)$ for all values of $\vec{s}$ for which
@@ -108,32 +101,65 @@
             solution to (4) for intervals of time where the number of hosts is
             constant is
             \begin{equation}
-                \vec{P}\left(t\mid\vec{p}_i\right) =
-                e^{Q\left(t-t_i\right)}\vec{p}_i
+                \vec{P}\left(t\mid\vec{p}_i, t_i\right) =
+                e^{Q\left(t-t_i\right)}\vec{p}_i,
             \end{equation}
-            where $\vec{p}_i$ is the initial density at some time $t_i$.
+            where $\vec{p}_i$ is the initial density at some time $t_i$. We may
+            extend this solution to intervals of time in which the number of
+            hosts increases (i.e., there are cospeciation events) by
+            introducing a function $f$ that maps the density immediately
+            preceding a cospeciation to that immediately following the
+            cospeciation event.
 
-        \subsection*{Density for the Reconstructed Coevolutionary Process}
-
-            The initial density for the next interval can be calculated using
-            the final density of the previous interval using a function
-            $f$ that maps the density immediately preceding the cospeciation
-            event to that immediately following the cospeciation event. Let the
-            state density after time.
-
-            Let $P_\varnothing\left(\vec{p}_i, t_i\right)$ be the probability
-            that there are no symbiont lineages on any host at time $t = 0$
-            given the state density $\vec{p}_i$ at time $t_i$. This term may be
-            computed
+            The remaining problem is to accomodate speciation events in the
+            symbiont phylogeny. Let $P_\varnothing\left(\vec{p}_i, t_i\right)$
+            be the probability that there are no symbiont lineages on any host
+            at time $t = 0$ given the state density $\vec{p}_i$ at time $t_i$;
+            i.e., the component of $\vec{P}\left(0\mid\vec{p}_i, t_i\right)$
+            associated with the state vector $\langle0,\dots,0\rangle$.  If $n
+            \in S$ is a leaf node and $h \in H$ its host, let
+            $P_n\left(\vec{p}_i, t_i\right)$ be the component of
+            $\vec{P}\left(0\mid\vec{p}_i, t_i\right)$ associated with the state
+            vector $\hat{u}_h$, the unit vector whose component associated with
+            $h$ is 1. Otherwise, we distinguish between cospeciation events and
+            independent speciation events:
             \begin{equation}
-                P_n
+                P_n\left(\vec{p}_i, t_i\right) =
+                \begin{cases}
+                    \begin{aligned}
+                        \left(P_{c_1}\left(\hat{u}_{k_1}, t_n\right)
+                        P_{c_2}\left(\hat{u}_{k_2}, t_n\right) +
+                        P_{c_1}\left(\hat{u}_{k_2}, t_n\right)
+                        P_{c_2}\left(\hat{u}_{k_1}, t_n\right)\right) \\
+                        \cdot P_\varnothing\left(f\left(g_h\left(\vec{P}\left(t_n\mid
+                        \vec{p}_i, t_i\right)\right)\right), t_n\right)
+                    \end{aligned} & t_n = t_h \\[8ex]
+                    \begin{aligned}
+                        & \vast( \frac{\lambda}{\lambda+\tau} P_{c_1}\left(\hat{u}_h,
+                        t_n\right) P_{c_2}\left(\hat{u}_h, t_n\right) +
+                        \frac{\tau}{\lambda+\tau}\cdot
+                        \frac{1}{\lvert{H_t}\rvert-1} \\
+                        &\cdot\left(P_{c_1}\left(\hat{u}_h, t_n\right)\sum_{j=1,j\neq
+                        h}^{\lvert{H_t}\rvert}{P_{c_2}\left(\hat{u}_j,
+                        t_n\right)} + P_{c_2}\left(\hat{u}_h, t_n\right)
+                        \sum_{j=1,j\neq h}^{\lvert{H_t}\rvert}
+                        {P_{c_1}\left(\hat{u}_j,t_n\right)}\right)\vast) \\
+                        & \cdot P_\varnothing\left(g_h\left(\vec{P}\left(t_n\mid\vec{p}_i,
+                        t_i\right)\right), t_n\right)
+                    \end{aligned}
+                    & t_n \neq t_h
+                \end{cases},
             \end{equation}
+            where $c_1$ and $c_2$ are the children of $n$ and $k_1$ and $k_2$
+            are the children of $h$ and $g_h$ maps a state density to the
+            density where one symbiont lineage has been removed from the host
+            lineage $h$.
 
             The initial density $\vec{p}_{or}$ for the reconstructed process is
             $P\left(\langle1\rangle, t_\text{or}\right) = 1$ and 0 for all
             other $\vec{s}$ at time~$t_\text{or}$, such that the density of the
             reconstructed cophylogeny is $P_r\left(\vec{p}_{or},
-            t_{r}\right)$, where $r$ is the root of the symbiont phylogeny.
+            t_{or}\right)$, where $r$ is the root of the symbiont phylogeny.
 
 
         \subsection*{Operators}
@@ -147,12 +173,13 @@
                 \min\left(t_p,t_q\right)$. If $t_i = t_h$ then no operation is
                 possible.\footnote{This seems like a reasonable condition, as
                 we should not be able to perform this operation when we are
-                short a dimension (i.e., in the cospeciating state). However,
-                in practice, it heavily skews the MCMC to spend substantial
-                time in the cospeciating state.} Otherwise, choose a new height ${t_i}^*$ uniformly at
-                random from the interval $\left[t_\text{lower},
-                t_\text{upper}\right]$ and then randomly select a new host $h^*
-                \in H_{{t_i}^*}.$\footnote{This is not the operator exactly as
+                missing the dimension that we are operating in (i.e., in the
+                cospeciating state). However, in practice, it heavily skews the
+                MCMC to spend substantial time in the cospeciating state.}
+                Otherwise, choose a new height ${t_i}^*$ uniformly at random
+                from the interval $\left[t_\text{lower}, t_\text{upper}\right]$
+                and then randomly select a new host $h^* \in
+                H_{{t_i}^*}.$\footnote{This is not the operator exactly as
                 Alexei suggested it, but this version is easier to implement.}
                 The Hastings ratio for this operation is
                 $\frac{\lvert{H_{{t_i}^*}}\rvert} {\lvert{H_{t_i}}\rvert}$.
@@ -170,7 +197,7 @@
                 operation increases the state's dimension by one and has a
                 Hastings ratio of $t_\text{upper} - t_h$.
 
-                Otherwise when $t_i \neq t_h$, set $t_i^* = t_h$.  This reduces
+                Otherwise, when $t_i \neq t_h$, set $t_i^* = t_h$. This reduces
                 the dimension by one and has a Hastings ratio of
                 $\frac{1}{t_\text{upper} - t_h}$.
 \end{document}
