@@ -28,10 +28,14 @@
 
         \subsection*{Definitions}
 
-            Let , and . The complete cophylogeny consists
+            Let $S$ and $H$ be the set of nodes in the symbiont and host trees,
+            respectively. Both are rooted, bifurcating, ultrametric
+            reconstructed trees that include an additional origin node that is
+            ancestral to their root nodes. We assume that the height of all
+            leaf nodes is $t = 0$.
 
-            Let $\tau_n$ be the height of a node~$n$ and $H_t = \left\{h \in H:
-            \tau_h \leq t < \tau_p\right\}$ be the set of host lineages that exist
+            Let $t_n$ be the height of a node~$n$ and $H_t = \left\{h \in H:
+            t_h \leq t < t_p\right\}$ be the set of host lineages that exist
             at time~$t$, where $p$ is the parent of $h$.
 
         \subsection*{Cophylogeny Density}
@@ -52,7 +56,7 @@
             \mathbb{N}_{0}^{\lvert{H_t}\rvert}$ be the number of symbionts
             present on each host lineage at time~$t$. Assuming that in an
             infinitesimal period of time there may be only one duplication,
-            host-switch, or loss event,
+            host-switch, or loss event, we have the master equation
 
             \begin{equation}
                 \begin{split}
@@ -84,9 +88,11 @@
             \begin{equation}
                 T_{D_i}\left(\vec{s}\right) = \mu \vec{s}_i.
             \end{equation}
+            Note that $P\left(\vec{s},t\right)$ is differentiable only where
+            $\lvert{H_t}\rvert$ is continuous.
 
             If we add the condition that $P\left(\vec{s},t\right) = 0$ if any
-            component of $\vec{s}$ is more than some maximum~$L$ and that
+            component of $\vec{s}$ is more than some limit~$L$ and that
             $T_{B_i}\left(\vec{s}\right) = 0$ if $\vec{s}_i = L$ (i.e., we
             assume that the system may transition between only a finite set of
             states), we may write the master equation as
@@ -95,25 +101,40 @@
                 Q\vec{P}\left(t\right)
             \end{equation}
             where $\vec{P}\left(t\right)$ is a vector consisting of
-            $P\left(\vec{s}, t\right)$ for all possible values of $\vec{s}$ and
-            $Q$ is a matrix consisting of the coefficients from equation (1).
-            The solution to (4) is
+            $P\left(\vec{s}, t\right)$ for all values of $\vec{s}$ for which
+            $P\left(\vec{s}, t\right)$ may be greater than 0 and $Q$ is a
+            sparse $(L+1)^{\lvert{H_t}\rvert} \times (L+1)^{\lvert{H_t}\rvert}$
+            matrix consisting of the coefficients from equation (1). The
+            solution to (4) for intervals of time where the number of hosts is
+            constant is
             \begin{equation}
-                \vec{P}\left(t\right) = e^{Qt}\vec{p}_0
+                \vec{P}\left(t\mid\vec{p}_i\right) =
+                e^{Q\left(t-t_i\right)}\vec{p}_i
             \end{equation}
-            where $\vec{p}_0$ is the initial density for the system.
+            where $\vec{p}_i$ is the initial density at some time $t_i$.
 
-        \subsection*{Density for the Complete Coevolutionary Process}
+        \subsection*{Density for the Reconstructed Coevolutionary Process}
 
             The initial density for the next interval can be calculated using
             the final density of the previous interval using a function
-            $f : [0,1]^n \to [0,1]^{n+1}$ that maps the density immediately
-            preceding the cospeciation event to that immediately following the
-            cospeciation event.
+            $f$ that maps the density immediately preceding the cospeciation
+            event to that immediately following the cospeciation event. Let the
+            state density after time.
 
-            The initial density for the entire process is
+            Let $P_\varnothing\left(\vec{p}_i, t_i\right)$ be the probability
+            that there are no symbiont lineages on any host at time $t = 0$
+            given the state density $\vec{p}_i$ at time $t_i$. This term may be
+            computed
+            \begin{equation}
+                P_n
+            \end{equation}
+
+            The initial density $\vec{p}_{or}$ for the reconstructed process is
             $P\left(\langle1\rangle, t_\text{or}\right) = 1$ and 0 for all
-            other $\vec{s}$ at time~$t_\text{or}$.
+            other $\vec{s}$ at time~$t_\text{or}$, such that the density of the
+            reconstructed cophylogeny is $P_r\left(\vec{p}_{or},
+            t_{r}\right)$, where $r$ is the root of the symbiont phylogeny.
+
 
         \subsection*{Operators}
 
@@ -121,34 +142,35 @@
 
                 Randomly select an internal node $i$ from the symbiont tree.
                 Let $p$ be its parent, $c_1$ and $c_2$ be its children, $h \in
-                H_{\tau_i}$ be its host, $q$ be the parent of $h$,
-                $\tau_\text{lower} = \max\left(\tau_{c_1},\tau_{c_2}\right)$,
-                and $\tau_\text{upper} = \min\left(\tau_p,\tau_q\right)$.
-                Choose a new height ${\tau_i}^*$ uniformly at random from
-                the interval $\left[\tau_\text{lower},
-                \tau_\text{upper}\right]$ and then randomly select a new host
-                $h^* \in H_{{\tau_i}^*}.$\footnote{This is not the operator
-                exactly as Alexei suggested it, but this version is easier to
-                implement.} The Hastings ratio for this operation is
-                $\frac{\lvert{H_{{\tau_i}^*}}\rvert}
-                {\lvert{H_{\tau_i}}\rvert}$.
+                H_{t_i}$ be its host, $q$ be the parent of $h$, $t_\text{lower}
+                = \max\left(t_{c_1},t_{c_2}\right)$, and $t_\text{upper} =
+                \min\left(t_p,t_q\right)$. If $t_i = t_h$ then no operation is
+                possible.\footnote{This seems like a reasonable condition, as
+                we should not be able to perform this operation when we are
+                short a dimension (i.e., in the cospeciating state). However,
+                in practice, it heavily skews the MCMC to spend substantial
+                time in the cospeciating state.} Otherwise, choose a new height ${t_i}^*$ uniformly at
+                random from the interval $\left[t_\text{lower},
+                t_\text{upper}\right]$ and then randomly select a new host $h^*
+                \in H_{{t_i}^*}.$\footnote{This is not the operator exactly as
+                Alexei suggested it, but this version is easier to implement.}
+                The Hastings ratio for this operation is
+                $\frac{\lvert{H_{{t_i}^*}}\rvert} {\lvert{H_{t_i}}\rvert}$.
 
             \subsubsection*{Cospeciation Operator}
 
                 Randomly select an internal node $i$ from the symbiont tree.
                 Let $p$ be its parent, $c_1$ and $c_2$ be its children, $h \in
-                H_{\tau_i}$ be its host, $q$ be the parent of $h$, and
-                $\tau_\text{upper} = \min\left(\tau_p,\tau_q\right)$. No
-                operation is possible when $\tau_h \leq
-                \max\left(\tau_{c_1},\tau_{c_2}\right)$.
+                H_{t_i}$ be its host, $q$ be the parent of $h$, and
+                $t_\text{upper} = \min\left(t_p,t_q\right)$. No operation is
+                possible when $t_h \leq \max\left(t_{c_1},t_{c_2}\right)$.
 
-                If $\tau_i = \tau_h$, choose a new height $\tau_i^*$ uniformly
-                at random from the interval $\left[\tau_h,
-                \tau_\text{upper}\right]$. This operation increases the state's
-                dimension by one and has a Hastings ratio of $\tau_\text{upper}
-                - \tau_h$.
+                If $t_i = t_h$, choose a new height $t_i^*$ uniformly at random
+                from the interval $\left[t_h, t_\text{upper}\right]$. This
+                operation increases the state's dimension by one and has a
+                Hastings ratio of $t_\text{upper} - t_h$.
 
-                Otherwise when $\tau_i \neq \tau_h$, set $\tau_i^* = \tau_h$.
-                This reduces the dimension by one and has a Hastings ratio of
-                $\frac{1}{\tau_\text{upper} - \tau_h}$.
+                Otherwise when $t_i \neq t_h$, set $t_i^* = t_h$.  This reduces
+                the dimension by one and has a Hastings ratio of
+                $\frac{1}{t_\text{upper} - t_h}$.
 \end{document}
