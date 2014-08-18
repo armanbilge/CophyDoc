@@ -187,9 +187,9 @@
                 If $t_i = t_h$, choose a new height $t_i^*$ uniformly at random
                 from the interval $\left[t_h, t_\text{upper}\right]$. This
                 operation increases the state's dimension by one and has a
-                Hastings ratio of $t_\text{upper} - t_h$.
+                Hastings ratio of $\frac{1}{t_\text{upper} - t_h}$.
 
                 Otherwise, when $t_i \neq t_h$, set $t_i^* = t_h$. This reduces
                 the dimension by one and has a Hastings ratio of
-                $\frac{1}{t_\text{upper} - t_h}$.
+                $t_\text{upper} - t_h$.
 \end{document}
