@@ -170,17 +170,10 @@
                 H_{t_i}$ be its host, $q$ be the parent of $h$, $t_\text{lower}
                 = \max\left(t_{c_1},t_{c_2}\right)$, and $t_\text{upper} =
                 \min\left(t_p,t_q\right)$. If $t_i = t_h$ then no operation is
-                possible.\footnote{This seems like a reasonable condition, as
-                we should not be able to perform this operation when we are
-                missing the dimension that we are operating in (i.e., in the
-                cospeciating state). However, in practice, it heavily skews the
-                MCMC to spend substantial time in the cospeciating state.}
-                Otherwise, choose a new height ${t_i}^*$ uniformly at random
-                from the interval $\left[t_\text{lower}, t_\text{upper}\right]$
-                and then randomly select a new host $h^* \in
-                H_{{t_i}^*}.$\footnote{This is not the operator exactly as
-                Alexei suggested it, but this version is easier to implement.}
-                The Hastings ratio for this operation is
+                possible.  Otherwise, choose a new height ${t_i}^*$ uniformly
+                at random from the interval $\left[t_\text{lower},
+                t_\text{upper}\right]$ and then randomly select a new host $h^*
+                \in H_{{t_i}^*}$.  The Hastings ratio for this operation is
                 $\frac{\lvert{H_{{t_i}^*}}\rvert} {\lvert{H_{t_i}}\rvert}$.
 
             \subsubsection*{Cospeciation Operator}
