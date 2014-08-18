@@ -33,17 +33,36 @@
 
         \subsection*{Definitions}
 
-            Let $S$ and $H$ be the set of nodes in the symbiont and host trees,
-            respectively. Both are rooted, bifurcating, ultrametric
-            reconstructed trees that include an additional origin node that is
-            ancestral to their root nodes. We assume that the height of all
-            leaf nodes is $t = 0$.
+            Let $S$ and $H$ the symbiont and host trees, respectively,
+            $V\left(\cdot\right)$ their set of vertices or nodes, and
+            $E\left(\cdot\right)$ their set of edges or branches. Both are
+            rooted, bifurcating, ultrametric reconstructed trees that include
+            an additional origin node that is ancestral to their root nodes.
+            Their reconciliation is a mapping $\mathcal{R} : V\left(S\right)\to
+            V\left(H\right)$. We assume that the height of all leaf nodes is~$t
+            = 0$.
 
-            Let $t_n$ be the height of a node~$n$ and $H_t = \left\{h \in H:
-            t_h \leq t < t_p\right\}$ be the set of host lineages that exist
-            at time~$t$, where $p$ is the parent of $h$.
+            Let $t_n$ be the height of a node~$n$ and $H_t = \left\{h \in
+            V\left(H\right) : t_h \leq t < t_p\right\}$ be the set of host
+            lineages that exist at time~$t$, where $p$ is the parent of $h$.
 
         \subsection*{Density for the Reconstructed Coevolutionary Process}
+
+            We express the probability of a symbiont tree and the
+            reconciliation given the host tree and coevolutionary rates as
+            \begin{equation}
+                \label{eq:breakdown}
+                P\left(S,\mathcal{R} \mid H,\theta\right) =
+                    \sum_{c\in\mathcal{C}}
+                    {P\left(S,\mathcal{R} \mid c, H,\theta\right)
+                    P\left(c\mid H,\theta\right)}
+            \end{equation}
+            where $\mathcal{C}$ is the set of all realisations and $\theta =
+            \left(\lambda, \tau, \mu\right)$. A realisation $c \in \mathcal{C}$
+            consists of the number of symbionts per host for every time $t \in
+            \left\{t_s : s \in V\left(S\right)\right\}$. In practice, we must
+            approximate~\eqref{eq:breakdown} by considering only a finite
+            subset of $\mathcal{C}$.
 
             Let $\vec{S}\left(t\right) : \mathbb{R}_{\geq 0} \to
             \mathbb{N}_{0}^{\lvert{H_t}\rvert}$ be the number of symbionts
@@ -52,6 +71,7 @@
             host-switch, or loss event, we have the master equation
 
             \begin{equation}
+                \label{eq:master}
                 \begin{split}
                     \frac{\partial}{\partial t} P\left(\vec{s},t\right) =
                     \sum_{i=1}^{\lvert{H_t}\rvert}
@@ -88,8 +108,9 @@
             component of $\vec{s}$ is more than some limit~$L$ and that
             $T_{B_i}\left(\vec{s}\right) = 0$ if $\vec{s}_i = L$ (i.e., we
             assume that the system may transition between only a finite set of
-            states), we may write the master equation as
+            states), we may write the master equation~\eqref{eq:master} as
             \begin{equation}
+                \label{eq:lde}
                 \frac{\partial}{\partial t} \vec{P}\left(t\right) =
                 Q\vec{P}\left(t\right),
             \end{equation}
@@ -97,9 +118,9 @@
             $P\left(\vec{s}, t\right)$ for all values of $\vec{s}$ for which
             $P\left(\vec{s}, t\right)$ may be greater than 0 and $Q$ is a
             sparse $(L+1)^{\lvert{H_t}\rvert} \times (L+1)^{\lvert{H_t}\rvert}$
-            matrix consisting of the coefficients from equation (1). The
-            solution to (4) for intervals of time where the number of hosts is
-            constant is
+            matrix consisting of the coefficients from \eqref{eq:master}. The
+            solution to~\eqref{eq:lde} for intervals of time where the number
+            of hosts is constant is
             \begin{equation}
                 \vec{P}\left(t\mid\vec{p}_i, t_i\right) =
                 e^{Q\left(t-t_i\right)}\vec{p}_i,
@@ -117,8 +138,8 @@
             at time $t = 0$ given the state density $\vec{p}_i$ at time $t_i$;
             i.e., the component of $\vec{P}\left(0\mid\vec{p}_i, t_i\right)$
             associated with the state vector $\langle0,\dots,0\rangle$.  If $n
-            \in S$ is a leaf node and $h \in H$ its host, let
-            $P_n\left(\vec{p}_i, t_i\right)$ be the component of
+            \in V\left(S\right)$ is a leaf node and $h \in V\left(H\right)$ its
+            host, let $P_n\left(\vec{p}_i, t_i\right)$ be the component of
             $\vec{P}\left(0\mid\vec{p}_i, t_i\right)$ associated with the state
             vector $\hat{u}_h$, the unit vector whose component associated with
             $h$ is 1. Otherwise, we distinguish between cospeciation events and
