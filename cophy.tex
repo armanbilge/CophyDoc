@@ -130,16 +130,19 @@
             hosts increases (i.e., there are cospeciation events) by
             introducing a function $f$ that maps the density immediately
             preceding a cospeciation to that immediately following the
-            cospeciation event.
+            cospeciation event. Note that this fully specifies the term
+            $P\left(c\mid H,\theta\right)$ from \eqref{eq:breakdown}.
 
             The remaining problem is to accomodate speciation events in the
-            symbiont phylogeny. Let $P_\varnothing\left(\vec{p}_i, t_i\right)$
-            be the probability that there are no symbiont lineages on any host
-            at time $t = 0$ given the state density $\vec{p}_i$ at time $t_i$;
-            i.e., the component of $\vec{P}\left(0\mid\vec{p}_i, t_i\right)$
-            associated with the state vector $\langle0,\dots,0\rangle$.  If $n
-            \in V\left(S\right)$ is a leaf node and $h \in V\left(H\right)$ its
-            host, let $P_n\left(\vec{p}_i, t_i\right)$ be the component of
+            symbiont phylogeny; i.e., compute $P\left(S,\mathcal{R} \mid c,
+            H,\theta\right)$ from \eqref{eq:breakdown}. Let
+            $P_\varnothing\left(\vec{p}_i, t_i\right)$ be the probability that
+            there are no symbiont lineages on any host at time $t = 0$ given
+            the state density $\vec{p}_i$ at time $t_i$; i.e., the component of
+            $\vec{P}\left(0\mid\vec{p}_i, t_i\right)$ associated with the state
+            vector $\langle0,\dots,0\rangle$.  If $n \in V\left(S\right)$ is a
+            leaf node and $h \in V\left(H\right)$ its host, let
+            $P_n\left(\vec{p}_i, t_i\right)$ be the component of
             $\vec{P}\left(0\mid\vec{p}_i, t_i\right)$ associated with the state
             vector $\hat{u}_h$, the unit vector whose component associated with
             $h$ is 1. Otherwise, we distinguish between cospeciation events and
