@@ -164,16 +164,19 @@
                         t_n\right)} + P_{c_2}\left(\hat{u}_h, t_n\right)
                         \sum_{j\in H_t,j\neq h}
                         {P_{c_1}\left(\hat{u}_j,t_n\right)}\right)\vast) \\
-                        & \cdot P_\varnothing\left(g_h\left(\vec{P}\left(t_n\mid\vec{p}_i,
+                        & \cdot P_\varnothing\left(
+                        g_h\left(v_h\odot\vec{P}\left(t_n\mid\vec{p}_i,
                         t_i\right)\right), t_n\right)
                     \end{aligned}
                     & t_n \neq t_h
                 \end{cases},
             \end{equation}
             where $c_1$ and $c_2$ are the children of $n$, $k_1$ and $k_2$
-            are the children of $h$, and $g_h$ maps a state density to the
-            density where one symbiont lineage has been removed from the host
-            lineage $h$.
+            are the children of $h$, $v_h$ is a vector whose components
+            are the number symbionts associated with the host $h$ in each
+            possible state, the symbol $\odot$ indicates componentwise
+            multiplication, and $g_h$ maps a state density to the density where
+            one symbiont lineage has been removed from the host lineage $h$.
 
             The initial density $\vec{p}_\text{or}$ for the reconstructed
             process is $P\left(\langle1\rangle, t_\text{or}\right) = 1$ and 0
